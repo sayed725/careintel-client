@@ -10,7 +10,7 @@ const DoctorsList = () => {
        queryFn: () => getDoctors(),
      });
 
-     console.log(data);
+    //  console.log(data);
 
      //non-prefetched query example
     //  const {data : nonPrefetchedData} = useQuery({

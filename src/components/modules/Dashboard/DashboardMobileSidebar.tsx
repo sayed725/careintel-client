@@ -29,7 +29,7 @@ const DashboardMobileSidebar = ({dashboardHome, navItems, userInfo} : DashboardM
 
       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 
-      {/* Navigation Area  */}
+      {/* Navigation menu Area  */}
 
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-1">
@@ -76,7 +76,7 @@ const DashboardMobileSidebar = ({dashboardHome, navItems, userInfo} : DashboardM
       <div className="border-t p-4">
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-          {/* if profile doesnt exist , use first letter of user name as profile photo like component */}
+          {/* if profile does not exist , use first letter of user name as profile photo like component */}
             <span className="text-sm font-semibold text-primary">
               {userInfo.name.charAt(0).toUpperCase()}
             </span>

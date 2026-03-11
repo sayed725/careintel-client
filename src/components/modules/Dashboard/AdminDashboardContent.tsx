@@ -19,28 +19,50 @@ const AdminDashboardContent = () => {
 
     // console.log(data);
   return (
-    <div>
-        <StatsCard
-        title="Total Appointments"
-        value={data?.appointmentCount || 0}
-        iconName="CalendarDays"
-        description="Number of appointments scheduled"
-        />
-        <StatsCard
-        title="Total Patients"
-        value={data?.patientCount || 0}
-        iconName="Users"
-        description="Number of patients registered"
-        />
+   <div className="space-y-8">
+           
 
-        <AppointmentBarChart
-        data={data?.barChartData || []}
-        />
+            {/* Stats Grid: Responsive 1, 2, or 4 columns */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <StatsCard
+                    title="Total Appointments"
+                    value={data?.appointmentCount || 0}
+                    iconName="CalendarDays"
+                    description="Total scheduled"
+                />
+                <StatsCard
+                    title="Total Patients"
+                    value={data?.patientCount || 0}
+                    iconName="Users"
+                    description="Registered patients"
+                />
+                <StatsCard
+                    title="Total Revenue"
+                    value={`$${data?.totalRevenue?.toLocaleString() || 0}`}
+                    iconName="DollarSign"
+                    description="Gross earnings"
+                />
+                <StatsCard
+                    title="Doctors"
+                    value={data?.doctorCount || 0}
+                    iconName="Stethoscope"
+                    description="Active medical staff"
+                />
+            </div>
 
-        <AppointmentPieChart
-        data={data?.pieChartData || []}
-        />
-    </div>
+            {/* Charts Section: Stacks on mobile, Side-by-side on desktop */}
+            <div className="grid gap-6 lg:grid-cols-7">
+                <div className="lg:col-span-4">
+                   
+                    <AppointmentBarChart data={data?.barChartData || []} title="Appointment Trends" description="Monthly Appointment Statistics" />
+                </div>
+                
+                <div className="lg:col-span-3 ">
+                    
+                    <AppointmentPieChart data={data?.pieChartData || []} title="Total Appointments Chart" description="Total Appointment Statistics" />
+                </div>
+            </div>
+        </div>
   )
 }
 

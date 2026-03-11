@@ -6,10 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 
 
 interface AppointmentBarChartProps {
-    data : BarChartData[]
+    data : BarChartData[],
+    title?: string,
+    description?: string
 }
 
-const AppointmentBarChart = ({data}: AppointmentBarChartProps) => {
+const AppointmentBarChart = ({data,  title, description}: AppointmentBarChartProps) => {
 
     if(!data || !Array.isArray(data)){
         return (
@@ -53,8 +55,9 @@ const AppointmentBarChart = ({data}: AppointmentBarChartProps) => {
   return (
     <Card className="col-span-4">
         <CardHeader>
-            <CardTitle>Appointment Trends</CardTitle>
-            <CardDescription>Monthly Appointment Statistics</CardDescription>
+
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={350}>

@@ -1,31 +1,22 @@
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { PieChartData } from "@/types/dashboard.types";
+import { BarChartData } from "@/types/dashboard.types"
+import { format } from "date-fns"
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 
-interface AppointmentPieChartProps {
-    data : PieChartData[]
-    title ?: string
-    description ?: string
+
+interface AppointmentBarChartProps {
+    data : BarChartData[]
 }
 
-const CHART_COLORS = [
-  "oklch(0.646 0.222 41.116)", // chart-1 - orange
-  "oklch(0.6 0.118 184.704)", // chart-2 - teal
-  "oklch(0.398 0.07 227.392)", // chart-3 - blue
-  "oklch(0.828 0.189 84.429)", // chart-4 - lime
-  "oklch(0.769 0.188 70.08)", // chart-5 - orange variant
-];
-
-
-const AppointmentPieChart = ({data, title, description}: AppointmentPieChartProps) => {
+const AppointmentBarChart = ({data}: AppointmentBarChartProps) => {
 
     if(!data || !Array.isArray(data)){
         return (
-            <Card className="col-span-2">
+            <Card className="col-span-4">
                 <CardHeader>
-                    <CardTitle>{title}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
+                    <CardTitle>Appointment Trends</CardTitle>
+                    <CardDescription>Monthly Appointment Statistics</CardDescription>
                 </CardHeader>
                 <CardContent className="flex items-center justify-center h-75">
                     <p className="text-sm text-muted-foreground">
@@ -38,62 +29,56 @@ const AppointmentPieChart = ({data, title, description}: AppointmentPieChartProp
 
 
     const formattedData = data.map((item) => ({
-      name: item.status
-        .replace(/_/g, " ") // Replace underscores with spaces for better readability
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase()) // Capitalize the first letter of each word
-        ,
-      value: Number(item.count),
-    }));
+        month : typeof item.month === "string" ? format(new Date(item.month), "MMM yyyy") : format(item.month, "MMM yyyy"),
+
+        appointments : Number(item.count)
+    }))
 
 
-    if(!formattedData.length || formattedData.every(item => item.value === 0)){
+    if(!formattedData.length || formattedData.every(item => item.appointments === 0)){
         return (
-            <Card className="col-span-2">
-                <CardHeader>
-                    <CardTitle>{title}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
-                </CardHeader>
-
-                <CardContent className="flex items-center justify-center h-75">
-                    <p className="text-sm text-muted-foreground">
-                        No appointment data available to display the chart.
-                    </p>
-                </CardContent>
-            </Card>
-        )
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>Appointment Trends</CardTitle>
+              <CardDescription>Monthly Appointment Statistics</CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center h-75">
+              <p className="text-sm text-muted-foreground">
+                No appointment data available.
+              </p>
+            </CardContent>
+          </Card>
+        );
     }
   return (
-    <Card className="col-span-2">
+    <Card className="col-span-4">
         <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
+            <CardTitle>Appointment Trends</CardTitle>
+            <CardDescription>Monthly Appointment Statistics</CardDescription>
         </CardHeader>
-
         <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                    <Pie
-                        data={formattedData}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        dataKey={"value"}
-                    >
-                        {formattedData.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                fill={CHART_COLORS[index % CHART_COLORS.length]}
-                            />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                </PieChart>
-            </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={formattedData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis tickLine={false} axisLine={false} dataKey="month" />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                allowDecimals={false}
+              />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="appointments"
+                fill="oklch(0.646 0.222 41.116)"
+                radius={[4, 4, 0, 0]}
+                maxBarSize={60}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
     </Card>
   )
 }
 
-export default AppointmentPieChart
+export default AppointmentBarChart

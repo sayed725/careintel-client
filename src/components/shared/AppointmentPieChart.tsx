@@ -42,7 +42,7 @@ const AppointmentPieChart = ({data, title, description}: AppointmentPieChartProp
       name: item.status
         .replace(/_/g, " ") // Replace underscores with spaces for better readability
         .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase()) // Capitalize the first letter of each word
+        .replace(/\b\w/g, (char) => char.toUpperCase()) // Capitalize the first letter of word
         ,
       value: Number(item.count),
     }));

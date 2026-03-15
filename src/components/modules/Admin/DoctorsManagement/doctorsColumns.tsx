@@ -1,4 +1,3 @@
-
 import DateCell from "@/components/shared/cell/DateCell";
 import StatusBadgeCell from "@/components/shared/cell/StatusBadgeCell";
 import UserInfoCell from "@/components/shared/cell/UserInfoCell";
@@ -24,6 +23,7 @@ export const doctorColumns: ColumnDef<IDoctor>[] = [
   {
     id: "specialties",
     accessorKey: "specialties",
+    enableSorting: false,
     header: "Specialties",
     cell: ({ row }) => {
         const specialties = row.original.specialties

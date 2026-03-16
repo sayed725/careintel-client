@@ -55,9 +55,9 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessag
 
     const tableColumns : ColumnDef<TData>[] = actions ? [...columns,
         
-        // Action column
+        // Action column 
         {
-            id : "actions", // Unique id for the column
+            id : "actions", //  id for the column
             header: "Actions",
             enableSorting: false,
             cell: ({ row }) => {

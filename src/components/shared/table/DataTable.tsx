@@ -67,7 +67,7 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarActi
         
         // Action column
         {
-            id : "actions", // Unique id for the column
+            id : "actions", // Unique id for  column
             header: "Actions",
             enableSorting: false,
             cell: ({ row }) => {

@@ -1,4 +1,3 @@
-
 import DoctorsTable from "@/components/modules/Admin/DoctorsManagement/DoctorsTable";
 import { getAllSpecialties, getDoctors } from "@/services/doctor.services";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
@@ -9,7 +8,6 @@ const DoctorsManagementPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
   const queryParamsObjects = await searchParams;
-  // console.log(queryParamsObjects);
   /*
   {
   searchTerm: "cardio",
@@ -42,8 +40,6 @@ const DoctorsManagementPage = async ({
     .filter(Boolean)
     .join("&");
 
-  // console.log(queryString, "querystring");
-
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -59,8 +55,6 @@ const DoctorsManagementPage = async ({
     staleTime: 1000 * 60 * 60 * 6, // 6 hours
     gcTime: 1000 * 60 * 60 * 24, // 24 hours
   });
-
-  // console.log(queryClient.getQueryData(["doctors", queryString]), "query data in page");
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

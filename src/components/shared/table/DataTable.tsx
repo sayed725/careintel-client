@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { PaginationMeta } from "@/types/api.types";
 import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
 import DataTableFilters, {
   DataTableFilterConfig,
   DataTableFilterValue,
@@ -24,6 +25,7 @@ interface DataTableProps<TData> {
     data : TData[];
     columns : ColumnDef<TData>[];
     actions ?: DataTableActions<TData>;
+  toolbarAction?: React.ReactNode;
     emptyMessage ?: string;
     isLoading ?: boolean;
     sorting ?: {
@@ -50,14 +52,22 @@ interface DataTableProps<TData> {
 }
 
 
-const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessage, isLoading, sorting, pagination, search, filters, meta } : DataTableProps<TData>) => {
+const DataTable = <TData,>({ data = [] as TData[], columns, actions, toolbarAction, emptyMessage, isLoading, sorting, pagination, search, filters, meta } : DataTableProps<TData>) => {
+
+    const [hasHydrated, setHasHydrated] = useState(false);
+
+    useEffect(() => {
+      setHasHydrated(true);
+    }, []);
+
+    const showLoadingOverlay = Boolean(isLoading) && hasHydrated;
 
 
     const tableColumns : ColumnDef<TData>[] = actions ? [...columns,
         
-        // Action column 
+        // Action column
         {
-            id : "actions", //  id for the column
+            id : "actions", // Unique id for the column
             header: "Actions",
             enableSorting: false,
             cell: ({ row }) => {
@@ -104,6 +114,7 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessag
         }
     ] : columns;
 
+    // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table is intentionally used here and React Compiler already skips memoization for this hook.
     const table = useReactTable({
       data,
       columns: tableColumns,
@@ -140,7 +151,7 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessag
     });
     return (
       <div className="relative">
-        {isLoading && (
+        {showLoadingOverlay && (
           <div className="absolute inset-0 bg-background/50 backdrop-blur-sm z-10 flex items-center justify-center">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
@@ -149,7 +160,7 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessag
           </div>
         )}
 
-        {(search || filters) && (
+        {(search || filters || toolbarAction) && (
           <div className="mb-4 flex flex-wrap items-start gap-3">
             {search && (
               <DataTableSearch
@@ -170,6 +181,10 @@ const DataTable = <TData,>({ data = [] as TData[], columns, actions, emptyMessag
                 onClearAll={filters.onClearAll}
                 isLoading={isLoading}
               />
+            )}
+
+            {toolbarAction && (
+              <div className="ml-auto shrink-0">{toolbarAction}</div>
             )}
           </div>
         )}

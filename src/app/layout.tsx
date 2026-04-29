@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "A comprehensive healthcare management system built with Next.js, TypeScript, and Tailwind CSS. This application provides features for managing patient records, appointments, billing, and more, ensuring efficient healthcare administration.",
 };
 
+import ChatBot from "@/components/shared/ChatBot";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,6 +35,7 @@ export default function RootLayout({
         <QueryProviders>
           {children}
           <Toaster/>
+          <ChatBot />
         </QueryProviders>
       </body>
     </html>

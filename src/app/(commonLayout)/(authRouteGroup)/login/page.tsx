@@ -8,7 +8,10 @@ const LoginPage = async ({ searchParams }: LoginParams) => {
   const params = await searchParams;
   const redirectPath = params.redirect;
   return (
-    <LoginForm redirectPath={redirectPath}/>
+    <div className="pt-20">
+
+      <LoginForm redirectPath={redirectPath}/>
+    </div>
   )
 }
 
